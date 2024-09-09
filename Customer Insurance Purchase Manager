@@ -1,0 +1,74 @@
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LogisticRegression
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.svm import SVC
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import accuracy_score, classification_report, confusion_matrix
+from sklearn.preprocessing import StandardScaler
+
+# Load the customer data
+data = pd.read_csv("customer_data.csv")
+
+# Preprocess the data
+X = data.drop(["AgeEstimatedSaPurchased"], axis=1)
+y = data["AgeEstimatedSaPurchased"]
+
+# Split the data into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# Standardize the data
+scaler = StandardScaler()
+X_train = scaler.fit_transform(X_train)
+X_test = scaler.transform(X_test)
+
+# Logistic Regression
+logistic_regression = LogisticRegression(max_iter=1000)
+logistic_regression.fit(X_train, y_train)
+y_pred_logistic_regression = logistic_regression.predict(X_test)
+print("Logistic Regression Accuracy:", accuracy_score(y_test, y_pred_logistic_regression))
+print("Logistic Regression Classification Report:")
+print(classification_report(y_test, y_pred_logistic_regression))
+print("Logistic Regression Confusion Matrix:")
+print(confusion_matrix(y_test, y_pred_logistic_regression))
+
+# K-Nearest Neighbors (KNN)
+knn = KNeighborsClassifier(n_neighbors=5)
+knn.fit(X_train, y_train)
+y_pred_knn = knn.predict(X_test)
+print("KNN Accuracy:", accuracy_score(y_test, y_pred_knn))
+print("KNN Classification Report:")
+print(classification_report(y_test, y_pred_knn))
+print("KNN Confusion Matrix:")
+print(confusion_matrix(y_test, y_pred_knn))
+
+# Support Vector Machine (SVM)
+svm = SVC(kernel="rbf", C=1)
+svm.fit(X_train, y_train)
+y_pred_svm = svm.predict(X_test)
+print("SVM Accuracy:", accuracy_score(y_test, y_pred_svm))
+print("SVM Classification Report:")
+print(classification_report(y_test, y_pred_svm))
+print("SVM Confusion Matrix:")
+print(confusion_matrix(y_test, y_pred_svm))
+
+# Decision Trees
+decision_tree = DecisionTreeClassifier(random_state=42)
+decision_tree.fit(X_train, y_train)
+y_pred_decision_tree = decision_tree.predict(X_test)
+print("Decision Tree Accuracy:", accuracy_score(y_test, y_pred_decision_tree))
+print("Decision Tree Classification Report:")
+print(classification_report(y_test, y_pred_decision_tree))
+print("Decision Tree Confusion Matrix:")
+print(confusion_matrix(y_test, y_pred_decision_tree))
+
+# Random Forest (Ensemble learning)
+random_forest = RandomForestClassifier(n_estimators=100, random_state=42)
+random_forest.fit(X_train, y_train)
+y_pred_random_forest = random_forest.predict(X_test)
+print("Random Forest Accuracy:", accuracy_score(y_test, y_pred_random_forest))
+print("Random Forest Classification Report:")
+print(classification_report(y_test, y_pred_random_forest))
+print("Random Forest Confusion Matrix:")
+print(confusion_matrix(y_test, y_pred_random_forest))
